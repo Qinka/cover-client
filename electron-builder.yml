@@ -1,0 +1,21 @@
+appId: com.cover.cover-client
+productName: cover
+directories:
+  buildResources: build
+  output: release
+files:
+  - dist-electron/**/*
+  - dist-renderer/**/*
+extraMetadata:
+  main: dist-electron/main/index.js
+linux:
+  target:
+    - AppImage
+  category: Utility
+win:
+  target:
+    - nsis
+mac:
+  target:
+    - dmg
+asar: true
