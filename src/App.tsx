@@ -6,6 +6,7 @@ import { ActionButtons } from './components/ActionButtons.tsx';
 import { StatusBar, type StatusMessage } from './components/StatusBar.tsx';
 import { useCoverWasm } from './hooks/useCoverWasm.ts';
 import type { ElfInfo, LibcType } from './types/cover.ts';
+import { saveOutputFile } from './webFileSave.ts';
 import './App.css';
 
 declare global {
@@ -63,7 +64,7 @@ function App() {
     try {
       const packed = await packElf(elfData, compressionLevel, libc);
       const saveName = elfName ? `${elfName}.packed` : 'output.packed';
-      const ok = await window.electron.saveFile(packed.buffer, saveName);
+      const ok = await saveOutputFile(packed, saveName);
       if (ok) {
         setStatus({ type: 'success', text: `Packed ELF saved (${packed.byteLength.toLocaleString()} bytes)` });
       } else {
@@ -79,8 +80,6 @@ function App() {
   const isReady = status === 'ready';
   const canAnalyze = isReady && elfData !== null && !isPacking;
   const canPack = isReady && elfData !== null && elfInfo !== null && !elfInfo.is_packed && !isPacking;
-
-  console.dir({isReady, isPacking, "why": "asdaksjdklasjld"})
 
   return (
     <div className="app">
