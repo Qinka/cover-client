@@ -14,6 +14,7 @@ function createWindow() {
       nodeIntegration: false,
     },
     title: 'cover — ELF Packer',
+    autoHideMenuBar: true,
   });
 
   if (process.env.NODE_ENV === 'development') {
