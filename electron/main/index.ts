@@ -1,6 +1,6 @@
 import { app, BrowserWindow, ipcMain, dialog } from 'electron';
 import { join } from 'path';
-import { readFileSync, writeFileSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -20,7 +20,11 @@ function createWindow() {
   if (process.env.NODE_ENV === 'development') {
     mainWindow.loadURL('http://localhost:5173');
   } else {
-    mainWindow.loadFile(join(__dirname, '../dist-renderer/index.html'));
+    const rendererPath = join(__dirname, '../../dist-renderer/index.html');
+    if (!existsSync(rendererPath)) {
+      throw new Error(`Renderer entry not found: ${rendererPath}`);
+    }
+    mainWindow.loadFile(rendererPath);
   }
 }
 
